@@ -15,8 +15,8 @@ local function isRelevant(entity)
     local dist = (hrp.Position - local_player.root_part.Position).Magnitude
     local isPlayerChar = services.Players:GetPlayerFromCharacter(entity) ~= nil
     local limit = isPlayerChar
-        and (_flags.dont_process_players_over_studs or 500)
-        or  (_flags.dont_process_mobs_over_studs or 2000)
+        and (_flags.dont_process_players_over_studs or 60)
+        or  (_flags.dont_process_mobs_over_studs or 60)
     return dist <= limit
 end
 

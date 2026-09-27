@@ -166,10 +166,12 @@ return function(automation)
         APMain:AddLabel("Auto Parry Bind"):AddKeyPicker("auto_parry_bind", { Default = "None", Mode = "Toggle", Text = "Auto Parry Bind" })
         APMain:AddDivider()
         APMain:AddSlider("dont_process_players_over_studs", {
-            Text = "Skip Players Over", Default = 500, Min = 1, Max = 10000, Rounding = 0, Suffix = "s"
+            Text = "Skip Players Over", Default = 60, Min = 5, Max = 500, Rounding = 0, Suffix = "s",
+            Callback = function(v) _flags.dont_process_players_over_studs = v end,
         })
         APMain:AddSlider("dont_process_mobs_over_studs", {
-            Text = "Skip Mobs Over", Default = 2000, Min = 1, Max = 10000, Rounding = 0, Suffix = "s"
+            Text = "Skip Mobs Over", Default = 60, Min = 5, Max = 500, Rounding = 0, Suffix = "s",
+            Callback = function(v) _flags.dont_process_mobs_over_studs = v end,
         })
         APMain:AddSlider("task_concurrency", {
             Text = "Task Concurrency", Default = 20, Min = 15, Max = 750, Rounding = 0, Suffix = " actions"
