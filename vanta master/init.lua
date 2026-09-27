@@ -33,8 +33,7 @@ loadModule("security/anti_detection.lua")
 -- ──────────────────────────────────────────────────────
 -- [1] Core globals
 -- ──────────────────────────────────────────────────────
-local _rcprint = getgenv()._rcprint
-local function log(msg) _rcprint("[Vanta] " .. tostring(msg) .. "\n") end
+local function log(msg) print("[Vanta] " .. tostring(msg)) end
 
 -- Services
 local services = setmetatable({}, {

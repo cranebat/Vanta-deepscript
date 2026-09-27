@@ -1,10 +1,9 @@
 local persistent_data = getgenv().persistent_data
-local _rcprint        = getgenv()._rcprint
 
 local farms = {}
 getgenv().ns_farms = farms
 
-local function log(msg) _rcprint("[Vanta] " .. msg .. "\n") end
+local function log(msg) print("[Vanta] " .. tostring(msg)) end
 
 local function defineFarm(opts)
     farms[opts.id] = {

@@ -17,78 +17,17 @@ if not game:IsLoaded() then
 end
 
 -- ──────────────────────────────────────────────────────
--- [0] ANTI-DETECTION — kill GetLogHistory & redirect logs
---   Must run FIRST before anything prints anything.
---
---   Why the original dev's fix didn't work:
---     → It only filtered "Lycoris Recode" / "debug.profileEnd()"
---     → Everything else (init logs, farm logs, errors) still leaked
---     → hookfunction(GetLogHistory) only intercepts client-side calls,
---       but the detection likely runs before our hook is set up if we
---       don't do it on line 1.
---
---   Our fix:
---     1. Nuke GetLogHistory entirely → always returns {}
---     2. Redirect print/warn/error to rconsoleprint (exploit console only)
---        so messages NEVER enter Roblox's LogService buffer at all.
---     3. Override LogService.MessageOut connections so any listener that
---        already connected sees nothing useful.
+-- [0] ANTI-DETECTION — nuke GetLogHistory
 -- ──────────────────────────────────────────────────────
 local _LogService = game:GetService("LogService")
 
--- Step 1: Nuke GetLogHistory — return empty table always.
--- This covers both the game calling it AND any future calls.
+-- Nuke GetLogHistory — return empty table always.
+-- When Deepwoken calls LogService:GetLogHistory() to scan logs, it gets an empty table.
 local _oldGetLogHistory
-local _fakeGetLogHistory = function(...)
-    return {}
-end
 pcall(function()
-    _oldGetLogHistory = hookfunction(_LogService.GetLogHistory, newcclosure(_fakeGetLogHistory))
-end)
-
--- Step 2: Redirect print/warn/error to rconsoleprint.
--- rconsoleprint writes to the exploit's console (Volt's internal window),
--- NOT to Roblox's LogService, so it never appears in GetLogHistory.
-local _rcprint = (typeof(rconsoleprint) == "function" and rconsoleprint)
-             or (typeof(rconsolewarn) == "function" and rconsolewarn)
-             or function() end -- silent fallback if no rconsole
-
-local function _safe_concat(...)
-    local parts = {}
-    for i = 1, select("#", ...) do
-        parts[i] = tostring(select(i, ...))
-    end
-    return table.concat(parts, "\t")
-end
-
-local _oldPrint, _oldWarn, _oldError
-pcall(function()
-    _oldPrint = hookfunction(print, newcclosure(function(...)
-        _rcprint("[print] " .. _safe_concat(...) .. "\n")
+    _oldGetLogHistory = hookfunction(_LogService.GetLogHistory, newcclosure(function(...)
+        return {}
     end))
-end)
-pcall(function()
-    _oldWarn = hookfunction(warn, newcclosure(function(...)
-        _rcprint("[warn]  " .. _safe_concat(...) .. "\n")
-    end))
-end)
--- Don't hook error() — it needs to propagate for pcall to work correctly.
-
--- Step 3: Suppress LogService.MessageOut so any game-side listener
--- that connected AFTER us also sees nothing from our messages.
--- We do this by firing a fake empty event instead.
--- (This is belt-and-suspenders — steps 1+2 already cover most cases.)
-pcall(function()
-    local _msConn
-    _msConn = _LogService.MessageOut:Connect(function(msg, msgType)
-        -- Already intercepted at source by print/warn hooks above.
-        -- This connection intentionally does nothing — it just prevents
-        -- the message from bubbling to other MessageOut listeners
-        -- by being the first one connected (Roblox fires in order).
-        -- Note: we cannot truly block it, but we've already nuked
-        -- the buffer via GetLogHistory and print hooks.
-    end)
-    -- Keep the connection alive for the session.
 end)
 
 -- LPH stubs (no obfuscation needed)
@@ -181,19 +120,18 @@ local Maid = {} do
     end
 end
 
--- Logger — writes directly to exploit rconsole, never to Roblox LogService
+-- Logger
 local Logger = {} do
     function Logger.log(msg)
-        -- _rcprint is defined in section [0], always safe to call
-        _rcprint("[NS] " .. tostring(msg) .. "\n")
+        print("[Vanta] " .. tostring(msg))
     end
     function Logger.warn(msg)
-        _rcprint("[NS][WARN] " .. tostring(msg) .. "\n")
+        warn("[Vanta][WARN] " .. tostring(msg))
     end
     function Logger.notify(msg, dur)
         pcall(function()
             game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title    = "NewScript",
+                Title    = "Vanta",
                 Text     = tostring(msg),
                 Duration = dur or 4,
             })
@@ -1447,7 +1385,7 @@ local function buildUI()
 
     -- Window
     local Window = Library:CreateWindow({
-        Title        = "  ✦  NewScript  ✦",
+        Title        = "  ✦  Vanta  ✦",
         Center       = true,
         AutoShow     = true,
         TabPadding   = 8,
@@ -1456,7 +1394,7 @@ local function buildUI()
 
     -- ── Theme overrides ──────────────────────────────
     -- Custom purple accent palette, darker background
-    Library:SetAccentColor(Color3.fromHex("7C5CBF"))
+    Library.AccentColor = Color3.fromHex("7C5CBF")
 
     -- ── Tabs ─────────────────────────────────────────
     local Tabs = {

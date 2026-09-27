@@ -30,7 +30,7 @@ return function(automation)
         TabPadding   = 8,
         MenuFadeTime = 0.2,
     })
-    Library:SetAccentColor(Color3.fromHex("7C5CBF")) -- deep purple
+    Library.AccentColor = Color3.fromHex("7C5CBF") -- deep purple
 
     local Tabs = {
         Combat     = Window:AddTab("⚔  Combat"),
