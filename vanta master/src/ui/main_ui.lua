@@ -150,7 +150,7 @@ return function(automation)
         })
 
         -- ── Auto Parry (Tabbox) ───────────────────────────────────
-        local APBox   = T:AddTabbox("Auto Parry")
+        local APBox   = T:AddLeftTabbox()
         local APMain  = APBox:AddTab("Main")
         local APPVE   = APBox:AddTab("PVE")
         local APPPVP  = APBox:AddTab("PVP")
@@ -631,7 +631,7 @@ return function(automation)
         Mod:AddToggle("apply_mouse_sens",       { Text = "Apply Mouse Sens (Zoom)",    Default = false })
 
         -- ── Player ESP ─────────────────────────────────────────────
-        local ESPBox    = T:AddTabbox("Player ESP")
+        local ESPBox    = T:AddRightTabbox()
         local ESPPlayer = ESPBox:AddTab("Players")
         local ESPGlobal = ESPBox:AddTab("Global")
 
@@ -640,11 +640,11 @@ return function(automation)
             Callback = function(v) _flags.player_esp = v end,
         })
         ESPPlayer:AddLabel("Player ESP Bind"):AddKeyPicker("player_esp_bind", { Default = "None", Mode = "Toggle", Text = "Player ESP Bind" })
-        -- (colorpicker removed: chain off toggle instead) -- ESPPlayer:AddColorPicker("player_esp_color", { Title = "Player ESP Color", Default = Color3.fromRGB(205, 214, 244) })
+        ESPPlayer:AddLabel("Player ESP Color"):AddColorPicker("player_esp_color", { Default = Color3.fromRGB(205, 214, 244), Title = "Player ESP Color" })
         ESPPlayer:AddToggle("vw_color", { Text = "Voidwalker Color",    Default = true })
-        -- (colorpicker removed: chain off toggle instead) -- ESPPlayer:AddColorPicker("voidwalker_esp_color", { Title = "Voidwalker Color", Default = Color3.fromRGB(203, 166, 247) })
+        ESPPlayer:AddLabel("Voidwalker Color"):AddColorPicker("voidwalker_esp_color", { Default = Color3.fromRGB(203, 166, 247), Title = "Voidwalker Color" })
         ESPPlayer:AddToggle("gm_color", { Text = "Guildmate Color",     Default = true })
-        -- (colorpicker removed: chain off toggle instead) -- ESPPlayer:AddColorPicker("guildmate_esp_color",  { Title = "Guildmate Color",  Default = Color3.fromRGB(148, 226, 213) })
+        ESPPlayer:AddLabel("Guildmate Color"):AddColorPicker("guildmate_esp_color", { Default = Color3.fromRGB(148, 226, 213), Title = "Guildmate Color" })
         ESPPlayer:AddToggle("esp_healthbar", { Text = "Player Healthbars", Default = false })
         ESPPlayer:AddToggle("esp_boxes",     { Text = "Player Boxes",      Default = false })
         ESPPlayer:AddToggle("esp_nametags",  { Text = "Player Names",      Default = true  })
@@ -677,7 +677,7 @@ return function(automation)
             Text = "Show Stored Damage", Default = false,
             Tooltip = "Shows pending Poser stack damage as colored overlay.",
         })
-        -- (colorpicker removed: chain off toggle instead) -- ESPGlobal:AddColorPicker("show_stored_damage_color", { Title = "Stored Damage Color", Default = Color3.fromRGB(137, 180, 250) })
+        ESPGlobal:AddLabel("Stored Damage Color"):AddColorPicker("show_stored_damage_color", { Default = Color3.fromRGB(137, 180, 250), Title = "Stored Damage Color" })
 
         -- ── World ESP ──────────────────────────────────────────────
         local WorldESP = T:AddRightGroupbox("World ESP")
@@ -708,7 +708,7 @@ return function(automation)
                 Text = e[2], Default = false,
                 Callback = function(v) _flags[e[1]] = v end,
             })
-            -- colorpicker: chain off toggle (WorldESP:AddColorPicker not supported standalone)
+            WorldESP:AddLabel(e[2] .. " Color"):AddColorPicker(e[1].."_color", { Default = e[3], Title = e[2] .. " Color" })
             WorldESP:AddSlider(e[1].."_max_dist", {
                 Text = e[2] .. " Distance", Default = 2000, Min = 1, Max = 50000, Rounding = 0, Suffix = "s"
             })

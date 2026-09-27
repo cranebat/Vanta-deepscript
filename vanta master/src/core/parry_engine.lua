@@ -6,6 +6,20 @@ local Latency           = getgenv().Latency
 local Weapon            = getgenv().Weapon
 local DefendActionManager = getgenv().DefendActionManager
 
+-- Distance/relevance filter — skips entities too far to matter
+-- (prevents Auto Parry from reacting to combat happening elsewhere on the server)
+local function isRelevant(entity)
+    if not local_player.root_part then return false end
+    local hrp = entity:FindFirstChild("HumanoidRootPart")
+    if not hrp then return false end
+    local dist = (hrp.Position - local_player.root_part.Position).Magnitude
+    local isPlayerChar = services.Players:GetPlayerFromCharacter(entity) ~= nil
+    local limit = isPlayerChar
+        and (_flags.dont_process_players_over_studs or 500)
+        or  (_flags.dont_process_mobs_over_studs or 2000)
+    return dist <= limit
+end
+
 -- Named task spawner (prevents duplicate spawns for same name)
 local TaskSpawner = {} do
     local running = {}
@@ -206,6 +220,7 @@ local function weaponTestHandler(entity, track)
     if wait_s > 0 then task.wait(wait_s) end
     if not track.IsPlaying then return end
     if not _flags.auto_parry then return end
+    if not isRelevant(entity) then return end
 
     DefendActionManager:queue_parry(entity)
 end
@@ -239,6 +254,7 @@ local function attachEntityWatcher(entity)
         if not _flags.auto_parry then return end
         if entity == local_player.character then return end
         if not track or not track.Animation then return end
+        if not isRelevant(entity) then return end
 
         task.spawn(function()
             task.wait(1 / 60)
@@ -249,6 +265,7 @@ local function attachEntityWatcher(entity)
                 local wait_s = math.max(0, (named.wait - Latency:get_ping() * 1000) / 1000)
                 if wait_s > 0 then task.wait(wait_s) end
                 if not _flags.auto_parry then return end
+                if not isRelevant(entity) then return end
                 if named.type == "dodge" then
                     DefendActionManager:queue_dodge(entity)
                 else
