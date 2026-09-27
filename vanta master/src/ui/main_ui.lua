@@ -376,7 +376,6 @@ return function(automation)
                 Options.chance_timings:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " timings.")
             end)
-        )
         APOther:AddButton("Set Timing Chance", function()
                 local t = Options.chance_timings.Value
                 if not t or t == "" then Library:Notify("Select a timing first.", 4) return end
@@ -386,7 +385,6 @@ return function(automation)
                     Options.chance_dodge_weight.Value,
                     Options.chance_skip_weight.Value))
             end)
-        )
         APOther:AddDivider()
         APOther:AddToggle("info_logger", {
             Text    = "Timing Logger",
@@ -505,7 +503,6 @@ return function(automation)
                 Options.mantra_slidecasting_mantras:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " mantras.")
             end)
-        )
 
         -- ── Mantra Rolling ───────────────────────────────────────
         local MR = T:AddRightGroupbox("Mantra Rolling")
@@ -530,7 +527,6 @@ return function(automation)
                 Options.action_rolling_mantras:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " mantras.")
             end)
-        )
 
         -- ── Backstab Movestacker ─────────────────────────────────
         local BS = T:AddLeftGroupbox("Backstab Movestacker")
@@ -554,7 +550,6 @@ return function(automation)
                 Options.backstab_movestacker_mantras:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " mantras.")
             end)
-        )
 
         -- ── APC Timings Info ─────────────────────────────────────
         local TInfo = T:AddRightGroupbox("APC Timings Info")
@@ -734,7 +729,6 @@ return function(automation)
                 Options.ingredient_filter:SetValues(ingredientArray)
                 Library:Notify("Found " .. #found .. " ingredients.")
             end)
-        )
     end
 
     -- ─────────────────────────────────────────────────────────────
@@ -780,7 +774,6 @@ return function(automation)
                 end
                 Library:Notify("All farms stopped.")
             end)
-        )
         G2:AddButton("Server Hop", function()
                 pcall(function()
                     game:GetService("TeleportService"):TeleportToPlaceInstance(
@@ -790,7 +783,6 @@ return function(automation)
                     )
                 end)
             end)
-        )
         G2:AddDivider()
         G2:AddLabel("Active farms persist across")
         G2:AddLabel("server hops via MemStorage.")
@@ -824,7 +816,6 @@ return function(automation)
                 pcall(function() Library:Unload() end)
                 pcall(function() getgenv()._vanta_loaded() end)
             end)
-        )
         G2:AddButton("Wipe Saved Data", function()
                 if ChoiceFrame then
                     ChoiceFrame.set(
@@ -844,7 +835,6 @@ return function(automation)
                     Library:Notify("Saved data wiped.")
                 end
             end)
-        )
     end
 
     -- ── Auto-load saved config ────────────────────────────────────
