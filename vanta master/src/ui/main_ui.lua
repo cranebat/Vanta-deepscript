@@ -69,8 +69,7 @@ return function(automation)
             Default = false,
             Tooltip = "Hold M1 to attack via assassination.",
             Callback = function(v) _flags.auto_dustlunge = v end,
-        })
-        Library:AddKeyPicker("auto_dustlunge_bind", { Title = "Assassination Bind (hold)", Default = "V", Mode = "Hold" })
+        }):AddKeyPicker("auto_dustlunge_bind", { Text = "Assassination Bind (hold)", Default = "V", Mode = "Hold" })
         Assist:AddToggle("auto_dustlunge_debug", {
             Text    = "Assassination Debug",
             Default = false,
@@ -105,8 +104,7 @@ return function(automation)
             Default = false,
             Tooltip = "Removes all stun from the game.",
             Callback = function(v) _flags.no_stun = v end,
-        })
-        Library:AddKeyPicker("no_stun_bind", { Title = "No Stun Bind", Default = "None", Mode = "Toggle" })
+        }):AddKeyPicker("no_stun_bind", { Text = "No Stun Bind", Default = "None", Mode = "Toggle" })
         NoStun:AddDropdown("no_stun_items", {
             Text   = "Removed Effects",
             Values = {
@@ -133,8 +131,7 @@ return function(automation)
             Default = false,
             Tooltip = "Attach to target's back. M1/M2 to select.",
             Callback = function(v) _flags.attach_to_back = v end,
-        })
-        Library:AddKeyPicker("attach_to_back_bind", { Title = "ATB Bind", Default = "None", Mode = "Toggle" })
+        }):AddKeyPicker("attach_to_back_bind", { Text = "ATB Bind", Default = "None", Mode = "Toggle" })
         ATB:AddSlider("atb_x_offset", { Text = "X Offset", Default = 0,  Min = -150, Max = 150, Rounding = 0 })
         ATB:AddSlider("atb_y_offset", { Text = "Y Offset", Default = 0,  Min = -150, Max = 150, Rounding = 0 })
         ATB:AddSlider("atb_z_offset", { Text = "Z Offset", Default = 5,  Min = -150, Max = 150, Rounding = 0 })
@@ -162,8 +159,7 @@ return function(automation)
             Default = false,
             Tooltip = "Automatically parry/defend incoming attacks.",
             Callback = function(v) _flags.auto_parry = v end,
-        })
-        Library:AddKeyPicker("auto_parry_bind", { Title = "Auto Parry Bind", Default = "None", Mode = "Toggle" })
+        }):AddKeyPicker("auto_parry_bind", { Text = "Auto Parry Bind", Default = "None", Mode = "Toggle" })
         APMain:AddDivider()
         APMain:AddSlider("dont_process_players_over_studs", {
             Text = "Skip Players Over", Default = 500, Min = 1, Max = 10000, Rounding = 0, Suffix = "s"
@@ -253,8 +249,7 @@ return function(automation)
             Default = false,
             Tooltip = "Automatically feints when AP wants to parry.",
             Callback = function(v) _flags.auto_feint = v end,
-        })
-        Library:AddKeyPicker("auto_feint_bind", { Title = "Auto Feint Bind", Default = "None", Mode = "Toggle" })
+        }):AddKeyPicker("auto_feint_bind", { Text = "Auto Feint Bind", Default = "None", Mode = "Toggle" })
         APMain:AddSlider("feint_chance", { Text = "Feint Chance", Default = 100, Min = 0, Max = 100, Rounding = 0, Suffix = "%" })
         APMain:AddDropdown("blocked_auto_feint_moves", {
             Text    = "Don't Feint Against",
@@ -407,8 +402,7 @@ return function(automation)
             Default = false,
             Tooltip = "Changes animation speed — affects AP timings.",
             Callback = function(v) _flags.anim_speed_changer = v end,
-        })
-        Library:AddKeyPicker("anim_speed_changer_bind", { Title = "Speed Changer Bind", Default = "None", Mode = "Toggle" })
+        }):AddKeyPicker("anim_speed_changer_bind", { Text = "Speed Changer Bind", Default = "None", Mode = "Toggle" })
         ASC:AddToggle("switch_speeds", {
             Text    = "Switch Speed",
             Default = false,
@@ -493,8 +487,7 @@ return function(automation)
             Text    = "Mantra Slidecasting",
             Default = false,
             Callback = function(v) _flags.mantra_slidecasting = v end,
-        })
-        Library:AddKeyPicker("mantra_slidecasting_bind", { Title = "Slidecast Bind", Default = "None", Mode = "Toggle" })
+        }):AddKeyPicker("mantra_slidecasting_bind", { Text = "Slidecast Bind", Default = "None", Mode = "Toggle" })
         MS:AddSlider("mantra_slidecasting_chance", { Text = "Trigger Chance", Default = 70, Min = 1, Max = 100, Rounding = 0, Suffix = "%" })
         MS:AddDropdown("mantra_slidecasting_mantras", { Text = "Trigger Mantras", Values = {}, Default = {}, Multi = true })
         MS:AddButton({
@@ -520,8 +513,7 @@ return function(automation)
             Text    = "Mantra Rolling",
             Default = false,
             Callback = function(v) _flags.action_rolling = v end,
-        })
-        Library:AddKeyPicker("action_rolling_bind", { Title = "Rolling Bind", Default = "None", Mode = "Toggle" })
+        }):AddKeyPicker("action_rolling_bind", { Text = "Rolling Bind", Default = "None", Mode = "Toggle" })
         MR:AddSlider("action_rolling_chance", { Text = "Trigger Chance", Default = 70, Min = 1, Max = 100, Rounding = 0, Suffix = "%" })
         MR:AddDropdown("action_rolling_mantras", { Text = "Trigger Mantras", Values = {}, Default = {}, Multi = true })
         MR:AddButton({
@@ -638,8 +630,7 @@ return function(automation)
         ESPPlayer:AddToggle("player_esp", {
             Text = "Player ESP", Default = false,
             Callback = function(v) _flags.player_esp = v end,
-        })
-        Library:AddKeyPicker("player_esp_bind", { Title = "Player ESP Bind", Default = "None", Mode = "Toggle" })
+        }):AddKeyPicker("player_esp_bind", { Text = "Player ESP Bind", Default = "None", Mode = "Toggle" })
         -- (colorpicker removed: chain off toggle instead) -- ESPPlayer:AddColorPicker("player_esp_color", { Title = "Player ESP Color", Default = Color3.fromRGB(205, 214, 244) })
         ESPPlayer:AddToggle("vw_color", { Text = "Voidwalker Color",    Default = true })
         -- (colorpicker removed: chain off toggle instead) -- ESPPlayer:AddColorPicker("voidwalker_esp_color", { Title = "Voidwalker Color", Default = Color3.fromRGB(203, 166, 247) })
