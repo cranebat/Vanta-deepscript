@@ -11,7 +11,7 @@
 --]]
 
 -- ── Change this to your GitHub Raw URL ──────────────────────
-local BASE_URL = "https://raw.githubusercontent.com/YourUsername/vanta-master/main/src/"
+local BASE_URL = "https://raw.githubusercontent.com/cranebat/Vanta-deepscript/main/vanta%20master/src/"
 -- ─────────────────────────────────────────────────────────────
 
 if not game:IsLoaded() then
