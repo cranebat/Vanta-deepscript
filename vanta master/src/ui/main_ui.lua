@@ -368,15 +368,20 @@ return function(automation)
         APOther:AddSlider("chance_parry_weight", { Text = "Parry Chance", Default = 100, Min = 0, Max = 100, Rounding = 0, Suffix = "%" })
         APOther:AddSlider("chance_dodge_weight", { Text = "Dodge Chance", Default = 0,   Min = 0, Max = 100, Rounding = 0, Suffix = "%" })
         APOther:AddSlider("chance_skip_weight",  { Text = "Skip Chance",  Default = 0,   Min = 0, Max = 100, Rounding = 0, Suffix = "%" })
-        APOther:AddButton("Load Timing List", function()
+        APOther:AddButton({
+            Text = "Load Timing List",
+            Func = function()
                 local list = {}
                 for k in pairs(getgenv().NAMED_TIMINGS or {}) do table.insert(list, k) end
                 table.sort(list)
                 Options.blocked_timings:SetValues(list)
                 Options.chance_timings:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " timings.")
-            end)
-        APOther:AddButton("Set Timing Chance", function()
+            end,
+        })
+        APOther:AddButton({
+            Text = "Set Timing Chance",
+            Func = function()
                 local t = Options.chance_timings.Value
                 if not t or t == "" then Library:Notify("Select a timing first.", 4) return end
                 Library:Notify(string.format("%s → P:%d D:%d S:%d",
@@ -384,7 +389,8 @@ return function(automation)
                     Options.chance_parry_weight.Value,
                     Options.chance_dodge_weight.Value,
                     Options.chance_skip_weight.Value))
-            end)
+            end,
+        })
         APOther:AddDivider()
         APOther:AddToggle("info_logger", {
             Text    = "Timing Logger",
@@ -491,7 +497,9 @@ return function(automation)
         Library:AddKeyPicker("mantra_slidecasting_bind", { Title = "Slidecast Bind", Default = "None", Mode = "Toggle" })
         MS:AddSlider("mantra_slidecasting_chance", { Text = "Trigger Chance", Default = 70, Min = 1, Max = 100, Rounding = 0, Suffix = "%" })
         MS:AddDropdown("mantra_slidecasting_mantras", { Text = "Trigger Mantras", Values = {}, Default = {}, Multi = true })
-        MS:AddButton("Load Mantras (Slidecast)", function()
+        MS:AddButton({
+            Text = "Load Mantras (Slidecast)",
+            Func = function()
                 local list = {}
                 if local_player and local_player.instance then
                     for _, m in local_player.instance.Backpack:GetChildren() do
@@ -502,7 +510,8 @@ return function(automation)
                 end
                 Options.mantra_slidecasting_mantras:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " mantras.")
-            end)
+            end,
+        })
 
         -- ── Mantra Rolling ───────────────────────────────────────
         local MR = T:AddRightGroupbox("Mantra Rolling")
@@ -515,7 +524,9 @@ return function(automation)
         Library:AddKeyPicker("action_rolling_bind", { Title = "Rolling Bind", Default = "None", Mode = "Toggle" })
         MR:AddSlider("action_rolling_chance", { Text = "Trigger Chance", Default = 70, Min = 1, Max = 100, Rounding = 0, Suffix = "%" })
         MR:AddDropdown("action_rolling_mantras", { Text = "Trigger Mantras", Values = {}, Default = {}, Multi = true })
-        MR:AddButton("Load Mantras (Roll)", function()
+        MR:AddButton({
+            Text = "Load Mantras (Roll)",
+            Func = function()
                 local list = {}
                 if local_player and local_player.instance then
                     for _, m in local_player.instance.Backpack:GetChildren() do
@@ -526,7 +537,8 @@ return function(automation)
                 end
                 Options.action_rolling_mantras:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " mantras.")
-            end)
+            end,
+        })
 
         -- ── Backstab Movestacker ─────────────────────────────────
         local BS = T:AddLeftGroupbox("Backstab Movestacker")
@@ -538,7 +550,9 @@ return function(automation)
             Callback = function(v) _flags.backstab_movestacker = v end,
         })
         BS:AddDropdown("backstab_movestacker_mantras", { Text = "Trigger Mantras", Values = {}, Default = {}, Multi = true })
-        BS:AddButton("Load Mantras (Backstab)", function()
+        BS:AddButton({
+            Text = "Load Mantras (Backstab)",
+            Func = function()
                 local list = {}
                 if local_player and local_player.instance then
                     for _, m in local_player.instance.Backpack:GetChildren() do
@@ -549,7 +563,8 @@ return function(automation)
                 end
                 Options.backstab_movestacker_mantras:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " mantras.")
-            end)
+            end,
+        })
 
         -- ── APC Timings Info ─────────────────────────────────────
         local TInfo = T:AddRightGroupbox("APC Timings Info")
@@ -714,7 +729,9 @@ return function(automation)
         WorldESP:AddDropdown("ingredient_filter", {
             Text = "Filter Ingredients", Values = ingredientArray, Default = { "All Ingredients" }, Multi = true,
         })
-        WorldESP:AddButton("Refresh Ingredient List", function()
+        WorldESP:AddButton({
+            Text = "Refresh Ingredient List",
+            Func = function()
                 local found = {}
                 pcall(function()
                     for _, v in pairs(workspace:WaitForChild("Ingredients"):GetChildren()) do
@@ -728,7 +745,8 @@ return function(automation)
                 for _, name in ipairs(found) do table.insert(ingredientArray, name) end
                 Options.ingredient_filter:SetValues(ingredientArray)
                 Library:Notify("Found " .. #found .. " ingredients.")
-            end)
+            end,
+        })
     end
 
     -- ─────────────────────────────────────────────────────────────
@@ -766,15 +784,20 @@ return function(automation)
         end
 
         local G2 = T:AddRightGroupbox("Controls")
-        G2:AddButton("Stop All Farms", function()
+        G2:AddButton({
+            Text = "Stop All Farms",
+            Func = function()
                 for _, entry in ipairs(farmList) do
                     if pd then pd:set(entry.flag, false) end
                     local tog = Toggles["farm_" .. entry.flag]
                     if tog then tog:SetValue(false) end
                 end
                 Library:Notify("All farms stopped.")
-            end)
-        G2:AddButton("Server Hop", function()
+            end,
+        })
+        G2:AddButton({
+            Text = "Server Hop",
+            Func = function()
                 pcall(function()
                     game:GetService("TeleportService"):TeleportToPlaceInstance(
                         game.PlaceId,
@@ -782,7 +805,8 @@ return function(automation)
                         game:GetService("Players").LocalPlayer
                     )
                 end)
-            end)
+            end,
+        })
         G2:AddDivider()
         G2:AddLabel("Active farms persist across")
         G2:AddLabel("server hops via MemStorage.")
@@ -812,11 +836,16 @@ return function(automation)
         G2:AddLabel("UI:      Project Rain style")
         G2:AddLabel("Farms:   16 auto-farms")
         G2:AddDivider()
-        G2:AddButton("Unload Vanta", function()
+        G2:AddButton({
+            Text = "Unload Vanta",
+            Func = function()
                 pcall(function() Library:Unload() end)
                 pcall(function() getgenv()._vanta_loaded() end)
-            end)
-        G2:AddButton("Wipe Saved Data", function()
+            end,
+        })
+        G2:AddButton({
+            Text = "Wipe Saved Data",
+            Func = function()
                 if ChoiceFrame then
                     ChoiceFrame.set(
                         "Wipe ALL saved data? This cannot be undone.",
@@ -834,7 +863,8 @@ return function(automation)
                     getgenv().persistent_data:wipe()
                     Library:Notify("Saved data wiped.")
                 end
-            end)
+            end,
+        })
     end
 
     -- ── Auto-load saved config ────────────────────────────────────
