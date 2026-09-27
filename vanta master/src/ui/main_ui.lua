@@ -70,12 +70,7 @@ return function(automation)
             Tooltip = "Hold M1 to attack via assassination.",
             Callback = function(v) _flags.auto_dustlunge = v end,
         })
-        Assist:AddKeybind("auto_dustlunge_bind", {
-            Text    = "Assassination Bind (hold)",
-            Default = "V",
-            Mode    = "Hold",
-            Callback = function(on) _flags.auto_dustlunge_held = on end,
-        })
+        Library:AddKeyPicker("auto_dustlunge_bind", { Title = "Assassination Bind (hold)", Default = "V", Mode = "Hold" })
         Assist:AddToggle("auto_dustlunge_debug", {
             Text    = "Assassination Debug",
             Default = false,
@@ -111,7 +106,7 @@ return function(automation)
             Tooltip = "Removes all stun from the game.",
             Callback = function(v) _flags.no_stun = v end,
         })
-        NoStun:AddKeybind("no_stun_bind", { Text = "No Stun Bind", Default = "None" })
+        Library:AddKeyPicker("no_stun_bind", { Title = "No Stun Bind", Default = "None", Mode = "Toggle" })
         NoStun:AddDropdown("no_stun_items", {
             Text   = "Removed Effects",
             Values = {
@@ -139,7 +134,7 @@ return function(automation)
             Tooltip = "Attach to target's back. M1/M2 to select.",
             Callback = function(v) _flags.attach_to_back = v end,
         })
-        ATB:AddKeybind("attach_to_back_bind", { Text = "ATB Bind", Default = "None" })
+        Library:AddKeyPicker("attach_to_back_bind", { Title = "ATB Bind", Default = "None", Mode = "Toggle" })
         ATB:AddSlider("atb_x_offset", { Text = "X Offset", Default = 0,  Min = -150, Max = 150, Rounding = 0 })
         ATB:AddSlider("atb_y_offset", { Text = "Y Offset", Default = 0,  Min = -150, Max = 150, Rounding = 0 })
         ATB:AddSlider("atb_z_offset", { Text = "Z Offset", Default = 5,  Min = -150, Max = 150, Rounding = 0 })
@@ -168,7 +163,7 @@ return function(automation)
             Tooltip = "Automatically parry/defend incoming attacks.",
             Callback = function(v) _flags.auto_parry = v end,
         })
-        APMain:AddKeybind("auto_parry_bind", { Text = "Auto Parry Bind", Default = "None" })
+        Library:AddKeyPicker("auto_parry_bind", { Title = "Auto Parry Bind", Default = "None", Mode = "Toggle" })
         APMain:AddDivider()
         APMain:AddSlider("dont_process_players_over_studs", {
             Text = "Skip Players Over", Default = 500, Min = 1, Max = 10000, Rounding = 0, Suffix = "s"
@@ -259,7 +254,7 @@ return function(automation)
             Tooltip = "Automatically feints when AP wants to parry.",
             Callback = function(v) _flags.auto_feint = v end,
         })
-        APMain:AddKeybind("auto_feint_bind", { Text = "Auto Feint Bind", Default = "None" })
+        Library:AddKeyPicker("auto_feint_bind", { Title = "Auto Feint Bind", Default = "None", Mode = "Toggle" })
         APMain:AddSlider("feint_chance", { Text = "Feint Chance", Default = 100, Min = 0, Max = 100, Rounding = 0, Suffix = "%" })
         APMain:AddDropdown("blocked_auto_feint_moves", {
             Text    = "Don't Feint Against",
@@ -373,20 +368,16 @@ return function(automation)
         APOther:AddSlider("chance_parry_weight", { Text = "Parry Chance", Default = 100, Min = 0, Max = 100, Rounding = 0, Suffix = "%" })
         APOther:AddSlider("chance_dodge_weight", { Text = "Dodge Chance", Default = 0,   Min = 0, Max = 100, Rounding = 0, Suffix = "%" })
         APOther:AddSlider("chance_skip_weight",  { Text = "Skip Chance",  Default = 0,   Min = 0, Max = 100, Rounding = 0, Suffix = "%" })
-        APOther:AddButton({
-            Text = "Load Timing List",
-            Func = function()
+        APOther:AddButton("Load Timing List", function()
                 local list = {}
                 for k in pairs(getgenv().NAMED_TIMINGS or {}) do table.insert(list, k) end
                 table.sort(list)
                 Options.blocked_timings:SetValues(list)
                 Options.chance_timings:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " timings.")
-            end,
-        })
-        APOther:AddButton({
-            Text = "Set Timing Chance",
-            Func = function()
+            end)
+        )
+        APOther:AddButton("Set Timing Chance", function()
                 local t = Options.chance_timings.Value
                 if not t or t == "" then Library:Notify("Select a timing first.", 4) return end
                 Library:Notify(string.format("%s → P:%d D:%d S:%d",
@@ -394,8 +385,8 @@ return function(automation)
                     Options.chance_parry_weight.Value,
                     Options.chance_dodge_weight.Value,
                     Options.chance_skip_weight.Value))
-            end,
-        })
+            end)
+        )
         APOther:AddDivider()
         APOther:AddToggle("info_logger", {
             Text    = "Timing Logger",
@@ -413,7 +404,7 @@ return function(automation)
             Tooltip = "Changes animation speed — affects AP timings.",
             Callback = function(v) _flags.anim_speed_changer = v end,
         })
-        ASC:AddKeybind("anim_speed_changer_bind", { Text = "Speed Changer Bind", Default = "None" })
+        Library:AddKeyPicker("anim_speed_changer_bind", { Title = "Speed Changer Bind", Default = "None", Mode = "Toggle" })
         ASC:AddToggle("switch_speeds", {
             Text    = "Switch Speed",
             Default = false,
@@ -499,12 +490,10 @@ return function(automation)
             Default = false,
             Callback = function(v) _flags.mantra_slidecasting = v end,
         })
-        MS:AddKeybind("mantra_slidecasting_bind", { Text = "Slidecast Bind", Default = "None" })
+        Library:AddKeyPicker("mantra_slidecasting_bind", { Title = "Slidecast Bind", Default = "None", Mode = "Toggle" })
         MS:AddSlider("mantra_slidecasting_chance", { Text = "Trigger Chance", Default = 70, Min = 1, Max = 100, Rounding = 0, Suffix = "%" })
         MS:AddDropdown("mantra_slidecasting_mantras", { Text = "Trigger Mantras", Values = {}, Default = {}, Multi = true })
-        MS:AddButton({
-            Text = "Load Mantras (Slidecast)",
-            Func = function()
+        MS:AddButton("Load Mantras (Slidecast)", function()
                 local list = {}
                 if local_player and local_player.instance then
                     for _, m in local_player.instance.Backpack:GetChildren() do
@@ -515,8 +504,8 @@ return function(automation)
                 end
                 Options.mantra_slidecasting_mantras:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " mantras.")
-            end,
-        })
+            end)
+        )
 
         -- ── Mantra Rolling ───────────────────────────────────────
         local MR = T:AddRightGroupbox("Mantra Rolling")
@@ -526,12 +515,10 @@ return function(automation)
             Default = false,
             Callback = function(v) _flags.action_rolling = v end,
         })
-        MR:AddKeybind("action_rolling_bind", { Text = "Rolling Bind", Default = "None" })
+        Library:AddKeyPicker("action_rolling_bind", { Title = "Rolling Bind", Default = "None", Mode = "Toggle" })
         MR:AddSlider("action_rolling_chance", { Text = "Trigger Chance", Default = 70, Min = 1, Max = 100, Rounding = 0, Suffix = "%" })
         MR:AddDropdown("action_rolling_mantras", { Text = "Trigger Mantras", Values = {}, Default = {}, Multi = true })
-        MR:AddButton({
-            Text = "Load Mantras (Roll)",
-            Func = function()
+        MR:AddButton("Load Mantras (Roll)", function()
                 local list = {}
                 if local_player and local_player.instance then
                     for _, m in local_player.instance.Backpack:GetChildren() do
@@ -542,8 +529,8 @@ return function(automation)
                 end
                 Options.action_rolling_mantras:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " mantras.")
-            end,
-        })
+            end)
+        )
 
         -- ── Backstab Movestacker ─────────────────────────────────
         local BS = T:AddLeftGroupbox("Backstab Movestacker")
@@ -555,9 +542,7 @@ return function(automation)
             Callback = function(v) _flags.backstab_movestacker = v end,
         })
         BS:AddDropdown("backstab_movestacker_mantras", { Text = "Trigger Mantras", Values = {}, Default = {}, Multi = true })
-        BS:AddButton({
-            Text = "Load Mantras (Backstab)",
-            Func = function()
+        BS:AddButton("Load Mantras (Backstab)", function()
                 local list = {}
                 if local_player and local_player.instance then
                     for _, m in local_player.instance.Backpack:GetChildren() do
@@ -568,8 +553,8 @@ return function(automation)
                 end
                 Options.backstab_movestacker_mantras:SetValues(list)
                 Library:Notify("Loaded " .. #list .. " mantras.")
-            end,
-        })
+            end)
+        )
 
         -- ── APC Timings Info ─────────────────────────────────────
         local TInfo = T:AddRightGroupbox("APC Timings Info")
@@ -644,12 +629,12 @@ return function(automation)
             Text = "Player ESP", Default = false,
             Callback = function(v) _flags.player_esp = v end,
         })
-        ESPPlayer:AddKeybind("player_esp_bind", { Text = "Player ESP Bind", Default = "None" })
-        ESPPlayer:AddColorPicker("player_esp_color", { Title = "Player ESP Color", Default = Color3.fromRGB(205, 214, 244) })
+        Library:AddKeyPicker("player_esp_bind", { Title = "Player ESP Bind", Default = "None", Mode = "Toggle" })
+        -- (colorpicker removed: chain off toggle instead) -- ESPPlayer:AddColorPicker("player_esp_color", { Title = "Player ESP Color", Default = Color3.fromRGB(205, 214, 244) })
         ESPPlayer:AddToggle("vw_color", { Text = "Voidwalker Color",    Default = true })
-        ESPPlayer:AddColorPicker("voidwalker_esp_color", { Title = "Voidwalker Color", Default = Color3.fromRGB(203, 166, 247) })
+        -- (colorpicker removed: chain off toggle instead) -- ESPPlayer:AddColorPicker("voidwalker_esp_color", { Title = "Voidwalker Color", Default = Color3.fromRGB(203, 166, 247) })
         ESPPlayer:AddToggle("gm_color", { Text = "Guildmate Color",     Default = true })
-        ESPPlayer:AddColorPicker("guildmate_esp_color",  { Title = "Guildmate Color",  Default = Color3.fromRGB(148, 226, 213) })
+        -- (colorpicker removed: chain off toggle instead) -- ESPPlayer:AddColorPicker("guildmate_esp_color",  { Title = "Guildmate Color",  Default = Color3.fromRGB(148, 226, 213) })
         ESPPlayer:AddToggle("esp_healthbar", { Text = "Player Healthbars", Default = false })
         ESPPlayer:AddToggle("esp_boxes",     { Text = "Player Boxes",      Default = false })
         ESPPlayer:AddToggle("esp_nametags",  { Text = "Player Names",      Default = true  })
@@ -682,7 +667,7 @@ return function(automation)
             Text = "Show Stored Damage", Default = false,
             Tooltip = "Shows pending Poser stack damage as colored overlay.",
         })
-        ESPGlobal:AddColorPicker("show_stored_damage_color", { Title = "Stored Damage Color", Default = Color3.fromRGB(137, 180, 250) })
+        -- (colorpicker removed: chain off toggle instead) -- ESPGlobal:AddColorPicker("show_stored_damage_color", { Title = "Stored Damage Color", Default = Color3.fromRGB(137, 180, 250) })
 
         -- ── World ESP ──────────────────────────────────────────────
         local WorldESP = T:AddRightGroupbox("World ESP")
@@ -713,7 +698,7 @@ return function(automation)
                 Text = e[2], Default = false,
                 Callback = function(v) _flags[e[1]] = v end,
             })
-            WorldESP:AddColorPicker(e[1].."_color", { Title = e[2] .. " Color", Default = e[3] })
+            -- colorpicker: chain off toggle (WorldESP:AddColorPicker not supported standalone)
             WorldESP:AddSlider(e[1].."_max_dist", {
                 Text = e[2] .. " Distance", Default = 2000, Min = 1, Max = 50000, Rounding = 0, Suffix = "s"
             })
@@ -734,9 +719,7 @@ return function(automation)
         WorldESP:AddDropdown("ingredient_filter", {
             Text = "Filter Ingredients", Values = ingredientArray, Default = { "All Ingredients" }, Multi = true,
         })
-        WorldESP:AddButton({
-            Text = "Refresh Ingredient List",
-            Func = function()
+        WorldESP:AddButton("Refresh Ingredient List", function()
                 local found = {}
                 pcall(function()
                     for _, v in pairs(workspace:WaitForChild("Ingredients"):GetChildren()) do
@@ -750,8 +733,8 @@ return function(automation)
                 for _, name in ipairs(found) do table.insert(ingredientArray, name) end
                 Options.ingredient_filter:SetValues(ingredientArray)
                 Library:Notify("Found " .. #found .. " ingredients.")
-            end,
-        })
+            end)
+        )
     end
 
     -- ─────────────────────────────────────────────────────────────
@@ -789,20 +772,16 @@ return function(automation)
         end
 
         local G2 = T:AddRightGroupbox("Controls")
-        G2:AddButton({
-            Text = "Stop All Farms",
-            Func = function()
+        G2:AddButton("Stop All Farms", function()
                 for _, entry in ipairs(farmList) do
                     if pd then pd:set(entry.flag, false) end
                     local tog = Toggles["farm_" .. entry.flag]
                     if tog then tog:SetValue(false) end
                 end
                 Library:Notify("All farms stopped.")
-            end,
-        })
-        G2:AddButton({
-            Text = "Server Hop",
-            Func = function()
+            end)
+        )
+        G2:AddButton("Server Hop", function()
                 pcall(function()
                     game:GetService("TeleportService"):TeleportToPlaceInstance(
                         game.PlaceId,
@@ -810,8 +789,8 @@ return function(automation)
                         game:GetService("Players").LocalPlayer
                     )
                 end)
-            end,
-        })
+            end)
+        )
         G2:AddDivider()
         G2:AddLabel("Active farms persist across")
         G2:AddLabel("server hops via MemStorage.")
@@ -841,16 +820,12 @@ return function(automation)
         G2:AddLabel("UI:      Project Rain style")
         G2:AddLabel("Farms:   16 auto-farms")
         G2:AddDivider()
-        G2:AddButton({
-            Text = "Unload Vanta",
-            Func = function()
+        G2:AddButton("Unload Vanta", function()
                 pcall(function() Library:Unload() end)
                 pcall(function() getgenv()._vanta_loaded() end)
-            end,
-        })
-        G2:AddButton({
-            Text = "Wipe Saved Data",
-            Func = function()
+            end)
+        )
+        G2:AddButton("Wipe Saved Data", function()
                 if ChoiceFrame then
                     ChoiceFrame.set(
                         "Wipe ALL saved data? This cannot be undone.",
@@ -868,8 +843,8 @@ return function(automation)
                     getgenv().persistent_data:wipe()
                     Library:Notify("Saved data wiped.")
                 end
-            end,
-        })
+            end)
+        )
     end
 
     -- ── Auto-load saved config ────────────────────────────────────
