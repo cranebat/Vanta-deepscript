@@ -1574,22 +1574,25 @@ local function buildUI()
         local G = Tabs.Settings:AddLeftGroupbox("Config")
         if SaveManager then
             SaveManager:SetLibrary(Library)
-            SaveManager:SetFolder("NewScript/Config")
+            SaveManager:SetFolder("Vanta/Config")
             SaveManager:IgnoreThemeSettings()
             SaveManager:BuildConfigSection(Tabs.Settings)
         end
 
         if ThemeManager then
             ThemeManager:SetLibrary(Library)
-            ThemeManager:SetFolder("NewScript/Config")
+            ThemeManager:SetFolder("Vanta/Config")
             ThemeManager:ApplyToTab(Tabs.Settings)
         end
 
         local G2 = Tabs.Settings:AddRightGroupbox("Script")
-        G2:AddLabel("NewScript v1.0")
+        G2:AddLabel("Vanta v1.0")
         G2:AddLabel("Executor: Volt")
         G2:AddLabel("Timings: APC Lycoris")
         G2:AddLabel("Farms: Project Rain")
+        G2:AddDivider()
+        G2:AddLabel("Menu keybind"):AddKeyPicker("MenuKeybind", { Default = "RightShift", NoUI = true, Text = "Menu keybind" })
+        Library.ToggleKeybind = Options.MenuKeybind
         G2:AddDivider()
         G2:AddButton("Unload Script", function()
             pcall(function() Library:Unload() end)
@@ -1602,11 +1605,6 @@ local function buildUI()
         end)
     end
 
-    -- Keybind to toggle window (RShift)
-    Library:SetCloseCallback(function()
-        -- Don't destroy on close, just hide
-    end)
-
     -- Load autoload config
     pcall(function()
         if SaveManager then
@@ -1614,7 +1612,7 @@ local function buildUI()
         end
     end)
 
-    Logger.notify("NewScript loaded! RShift = toggle UI")
+    Logger.notify("Vanta loaded! RShift = toggle UI")
 end
 
 -- Lightweight ESP (runs independently of UI library)
@@ -1707,7 +1705,7 @@ task.spawn(function()
     end
 end)
 
-Logger.log(string.format("NewScript initialized | Place: %d | APC timings: %d named moves", game.PlaceId, (function()
+Logger.log(string.format("Vanta initialized | Place: %d | APC timings: %d named moves", game.PlaceId, (function()
     local n = 0
     for _ in pairs(NAMED_TIMINGS) do n += 1 end
     return n
